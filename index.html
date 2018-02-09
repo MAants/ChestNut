@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        @font-face {
+            font-family: hyj;
+            src: url(./css/iconfont.woff);
+        }
+        
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        li {
+            list-style: none;
+        }
+        
+        .banner {
+            width: 500px;
+            height: 200px;
+            position: relative;
+            margin: 50px auto;
+            overflow: hidden;
+        }
+        
+        ul {
+            position: absolute;
+            display: flex;
+        }
+        
+        ol {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 120px;
+            height: 20px;
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        ol li {
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #000;
+            cursor: pointer;
+        }
+        
+        li.active {
+            background: rgba(255, 255, 255, .5);
+        }
+        
+        span {
+            position: absolute;
+            font-family: hyj;
+            height: 45px;
+            line-height: 45px;
+            text-align: center;
+            width: 20px;
+            background: rgba(255, 255, 255, .5);
+            top: calc(50% - 22px);
+            cursor: pointer;
+        }
+        
+        span.left {
+            left: 0;
+        }
+        
+        span.right {
+            right: 0;
+        }
+    </style>
+
+
+
+
+</head>
+
+<body>
+
+
+    <div class="banner">
+        <ul>
+            <li><img src="./images/1.jpg" alt=""></li>
+            <li><img src="./images/2.jpg" alt=""></li>
+            <li><img src="./images/3.jpg" alt=""></li>
+            <li><img src="./images/4.jpg" alt=""></li>
+            <li><img src="./images/5.jpg" alt=""></li>
+        </ul>
+        <ol>
+            <li class="active"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ol>
+        <span class="left">&#xe6df;</span>
+        <span class="right">&#xe6e1;</span>
+    </div>
+
+    <form action="">
+        <input type="text" name="" value="">
+        <input type="text" name="" value="">
+        <input type="text" name="" value="">
+        <input type="text" name="" value="">
+    </form>
+</body>
+<script src="./js/jquery-1.11.1.js">
+</script>
+<script>
+    var idx = 0,
+        timer = null;
+    $('ul li').first().clone(true).appendTo($('ul'));
+    timer = setInterval(function() {
+        auto()
+    }, 1000)
+
+    function auto() {
+        //  console.log($('ul li').length)
+        if (idx === $('ul li').length - 1) {
+            idx = 0;
+            $('ul').css(
+                'left', '0'
+            )
+        }
+        idx++;
+        idx %= 6;
+        play()
+    }
+
+    function play() {
+        $('ul').stop().animate({
+            left: -idx * 500
+        }, 500)
+        $('ol li').eq(idx % 5).addClass('active').siblings().removeClass('active');
+    }
+
+
+    $('.banner').hover(function() {
+        console.log(1)
+        clearInterval(timer)
+    }, function() {
+        timer = setInterval(function() {
+            auto()
+        }, 1000)
+    })
+
+    $('ol li').click(function() {
+        idx = $(this).index()
+        play()
+    })
+
+    $('.left').click(function() {
+        if (idx === 0) {
+            idx = $('ul li').length - 1;
+            $('ul').css(
+                'left', -idx * 500
+            )
+        }
+        idx--;
+        play()
+    })
+    $('.right').click(function() {
+        auto()
+    })
+
+
+    //
+
+
+    $('form :input').on('keyup', function(e) {
+        var event = e || window.event;
+        console.log(event.keyCode)
+        if (event.keyCode == 13) {
+            $(event.target).next().focus()
+        }
+    })
+</script>
+
+
+
+</html>
